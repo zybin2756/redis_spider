@@ -9,7 +9,7 @@ DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 
 #MYSQL
 MYSQL_HOST = "127.0.0.1"
-MYSQL_DBNAME = ""
+MYSQL_DBNAME = "JobInfo"
 MYSQL_USER = "root"
 MYSQL_PASSWORD = ""
 
