@@ -28,24 +28,28 @@ class RedisjobspiderSpider(RedisCrawlSpider):
         }
     }
     rules = (
-        Rule(LinkExtractor(allow=r'.*?gongsi/.*'), follow=True),
+        Rule(LinkExtractor(allow=r'.*?gongsi/\d+\.html'), follow=True),
         Rule(LinkExtractor(allow=r'.*?zhaopin/.*'), follow=True),
-        Rule(LinkExtractor(allow=r'jobs/\d+.html'), callback='parse_job', follow=True),
+        Rule(LinkExtractor(allow=r'.*?jobs/\d+.html'), callback='parse_job', follow=True),
 
     )
 
     def parse_job(self, response):
-        itemLoader = JobItemLoader(item=JobItem(), response=response)
-        itemLoader.add_css("job_name", ".job-name::attr(title)")
-        itemLoader.add_css("company_name", "#job_company dt a img::attr(alt)")
-        itemLoader.add_css("min_salary", ".salary::text")
-        itemLoader.add_css("max_salary", ".salary::text")
-        itemLoader.add_css("publish_time", ".publish_time::text")
-        itemLoader.add_value("crawl_time", datetime.now().strftime("%Y/%m/%d"))
-        itemLoader.add_css("city", ".work_addr")
-        itemLoader.add_css("content", ".content_l.fl")
-        itemLoader.add_value("url", response.url)
-        itemLoader.add_value("object_id", get_md5(response.url))
-
-        item = itemLoader.load_item()
-        yield item
+        outline = response.css(".outline_tag::text").extract()
+        if len(outline) == 0:
+            itemLoader = JobItemLoader(item=JobItem(), response=response)
+            itemLoader.add_css("job_name", ".job-name::attr(title)")
+            itemLoader.add_css("company_name", "#job_company dt a img::attr(alt)")
+            itemLoader.add_css("min_salary", ".salary::text")
+            itemLoader.add_css("max_salary", ".salary::text")
+            itemLoader.add_css("publish_time", ".publish_time::text")
+            itemLoader.add_value("crawl_time", datetime.now().strftime("%Y/%m/%d"))
+            itemLoader.add_css("city", ".work_addr")
+            itemLoader.add_css("content", ".content_l.fl")
+            itemLoader.add_value("url", response.url)
+            itemLoader.add_value("object_id", get_md5(response.url))
+            itemLoader.add_css("exp", ".job_request")
+            itemLoader.add_css("degree",".job_request")
+            itemLoader.add_css("company_type", ".c_feature > li:nth-child(1)")
+            item = itemLoader.load_item()
+            yield item

@@ -78,7 +78,7 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'scrapy_redis.pipelines.RedisPipeline': 300
+    'redis_spider.pipelines.MysqlPipeline': 300
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
