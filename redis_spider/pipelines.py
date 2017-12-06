@@ -47,3 +47,9 @@ class MysqlPipeline(object):
     def do_insert(self,cursor,item):
         insert_sql,params = item.get_insert_sql()
         cursor.execute(insert_sql,params)
+
+
+class esPipeline(object):
+    def process_item(self, item, spider):
+        item.save_to_es()
+        return item

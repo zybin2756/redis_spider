@@ -4,8 +4,8 @@
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 
 # Ensure all spiders share same duplicates filter through redis.
+# DUPEFILTER_CLASS = "redis_spider.scrapy_redis.dupefilter.RFPDupeFilter"
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
-
 
 #MYSQL
 MYSQL_HOST = "127.0.0.1"
@@ -78,7 +78,8 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'redis_spider.pipelines.MysqlPipeline': 300
+    # 'redis_spider.pipelines.MysqlPipeline': 300,
+    'redis_spider.pipelines.esPipeline': 300
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
